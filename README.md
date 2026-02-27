@@ -55,4 +55,4 @@ The Python mission logic is organized into separate scripts (used as reference f
 After the Unreal simulation is running, execute:
 
 ```bash
-python python/start.py
+python code/start.py
