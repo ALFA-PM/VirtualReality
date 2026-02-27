@@ -24,63 +24,35 @@ Additional components used:
 - **Blueprints (BP_WaypointExporter)**: prints waypoint names and world positions at runtime for validation/export.
 - **Python (AirSim API Controller)**: mission controller (connect, takeoff, safe altitude, waypoint traversal, painting, forbidden zone checks, safe stop/hover).
 
-## How It Works
+## Project Files / Code Reference
 
-### 1) Waypoints (Unreal Engine)
-- Waypoints are placed manually as actors in the UE level.
-- They are named sequentially (example: `wp_01 ... wp_08`) to define mission order.
-- They are tagged (example tag: `Wp`) so they can be found programmatically.
+The Python mission logic is organized into separate scripts (used as reference for the controller flow):
+- `python/start.py` — main entry point (runs the mission sequence)
+- `python/connect.py` — AirSim connection + API control + arming
+- `python/takeoff.py` — takeoff + stabilization + move to safe altitude
+- `python/final.py` — final mission logic (navigation, painting, forbidden-zone stop, safe hover/end)
 
-### 2) Waypoint Export & Debug (Blueprint)
-A Blueprint actor **BP_WaypointExporter** runs on `BeginPlay`:
-- Collects all waypoint actors
-- Filters them by tag (e.g., `Wp`)
-- Prints each waypoint name and world location `(X, Y, Z)` for debugging and verification
+> Folder reference: all controller scripts are in the **`python/`** folder.
 
-> Note: Unreal coordinates are **centimeters** and **Z-up**.
+## How to Run (Unreal + Python)
 
-### 3) Coordinate Conversion (UE → AirSim)
-Before navigation, waypoint locations are converted:
-- **Unreal Engine**: cm, Z-up  
-- **AirSim NED**: meters, Z-down  
+### 1) Run the Unreal Project
+1. Open **`newproject.uproject`**
+2. In Unreal Engine, open the **Level** and choose **Final Map** (the final mission map used in the report).
+3. Press **Play** to start the simulation (AirSim must be active in the level).
 
-This conversion must be applied consistently for:
-- waypoint navigation
-- forbidden zone checks
+### 2) Enable / Verify Plugins (Unreal Engine)
+1. Go to: **Edit → Plugins**
+2. Search and enable:
+   - **Cosys-AirSim** (Cosys plugin)
+   - **AirSim**
+   - (and Cesium plugin if your project uses it in the level)
+3. Restart Unreal Engine if prompted.
 
-### 4) Python Drone Controller (AirSim API)
-The Python mission is a finite sequence:
-1. **Initialization**
-   - Connect to AirSim
-   - Enable API control and arm
-   - Take off and wait until stable
-2. **Safe Altitude Policy**
-   - Move to a global safe cruise altitude `SAFE_Z` (NED frame)
-   - Because NED is z-down, **higher altitude = more negative z**
-3. **Waypoint Navigation**
-   For each waypoint (in name order):
-   - Read waypoint position (already converted to NED)
-   - Set commanded altitude `zcmd` (usually `SAFE_Z`)
-   - Move to `(xned, yned, zcmd)`
-   - Hover briefly to stabilize
-4. **Delivery Logging**
-   - At each waypoint, print a message such as **"Color Delivered"**
-5. **Painting Behavior**
-   - At one selected waypoint, perform a vertical sweep along NED z-axis:
-     - Downward = increasing z (less negative / more positive)
-     - Upward = decreasing z (more negative)
-   - Keep the sweep within a safe range/margin to avoid collisions
-6. **Forbidden Zone Stopping**
-   - Forbidden zone is defined in UE as a box trigger volume.
-   - In Python it is modeled as a rotated 3D box defined by:
-     - center position
-     - extents (half-dimensions)
-     - yaw rotation
-     - additional safety margin
-   - Before moving to the next waypoint, perform:
-     - **Target check**: destination inside forbidden volume?
-     - **Path check**: segment from current position to destination intersects forbidden volume?
-   - If violation is detected:
-     - print warning log (e.g., **"Forbidden Zone"**)
-     - stop forward progress
-     - hover safely and terminate mission
+> You can also locate related plugin content inside Unreal using the **Content Drawer** (enable “Show Plugin Content” if you don’t see it).
+
+### 3) Run the Python Controller
+After the Unreal simulation is running, execute:
+
+```bash
+python python/start.py
