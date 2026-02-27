@@ -30,7 +30,7 @@ The Python mission logic is organized into separate scripts (used as reference f
 - `python/start.py` — main entry point (runs the mission sequence)
 - `python/connect.py` — AirSim connection + API control + arming
 - `python/takeoff.py` — takeoff + stabilization + move to safe altitude
-- `python/final.py` — final mission logic (navigation, painting, forbidden-zone stop, safe hover/end)
+- `python/waypoint3.py` — final mission logic (navigation, painting, forbidden-zone stop, safe hover/end)
 
 > Folder reference: all controller scripts are in the **`python/`** folder.
 
