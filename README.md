@@ -3,6 +3,20 @@
 This project simulates an autonomous drone mission in a realistic urban environment. The mission runs inside **Unreal Engine 5.2.1**, using **Cesium** to stream a 3D city map, **Cosys-AirSim** for multirotor simulation and API control, **Blueprints** to export/debug waypoints, and **Python** to execute the navigation logic.  
 (Report: *Autonomous Drone Navigation – Virtual Reality for Robotics*, A.Y. 2025–2026)
 
+## Group members
+
+| Name Surname | ID | Email address |
+| ------------ | -- | ------------- |
+| [Sayna Arghideh](https://github.com/Arghidehsayna) | S5934809 | S5934809@studenti.unige.it |
+| [Mahnaz Mohammad Karimi](https://github.com/ALFA-PM)      | S6212087 | S6212087@studenti.unige.it |
+| [Alireza Tajabadi Farahani](https://github.com/ALFA-PM)      | S6212483 | S6212483@studenti.unige.it |
+| [AmirMahdi Matin](https://github.com/amirmat98)      | S5884715 | S5884715@studenti.unige.it |
+
+#### Supervisors
+
+- [Gianni Vercelli](https://rubrica.unige.it/personale/VUZCWVtr)
+- [Saverio Iacono](https://rubrica.unige.it/personale/U0tGXV1h)
+
 ## Mission Goals
 The drone must:
 - Take off and climb to a safe height above obstacles.
