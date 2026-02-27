@@ -1,7 +1,7 @@
 # Autonomous Drone Navigation (UE5 + Cesium + Cosys-AirSim + Python)
 
-This project simulates an autonomous drone mission in a realistic urban environment. The mission runs inside **Unreal Engine 5.2.1**, using **Cesium for Unreal** to stream a 3D city map, **Cosys-AirSim** for multirotor simulation and API control, **Blueprints** to export/debug waypoints, and **Python** to execute the navigation logic.  
-(Report: *Autonomous Drone Navigation – Virtual Reality for Robotics*, A.Y. 2025–2026)  
+This project simulates an autonomous drone mission in a realistic urban environment. The mission runs inside **Unreal Engine 5.2.1**, using **Cesium** to stream a 3D city map, **Cosys-AirSim** for multirotor simulation and API control, **Blueprints** to export/debug waypoints, and **Python** to execute the navigation logic.  
+(Report: *Autonomous Drone Navigation – Virtual Reality for Robotics*, A.Y. 2025–2026)
 
 ## Mission Goals
 The drone must:
@@ -13,9 +13,14 @@ The drone must:
 - End the mission safely in a stable hover.
 
 ## Tools & Technologies
-- **Unreal Engine 5.2.1**: level setup, waypoints, collision meshes, forbidden zone volumes, blueprint logic.
-- **Cesium for Unreal**: streamed 3D city tiles (example location used in report: Genova).
-- **Cosys-AirSim**: UE plugin providing multirotor physics simulation + Python API control.
+- **Unreal Engine 5.2.1**  
+  https://www.unrealengine.com/en-US
+- **Cesium Photorealistic 3D Tiles (learning page / reference)**  
+  https://cesium.com/learn/cesiumjs-learn/cesiumjs-photorealistic-3d-tiles/
+- **Cosys-AirSim (simulation + Python API)**  
+  https://github.com/Cosys-Lab/Cosys-AirSim
+
+Additional components used:
 - **Blueprints (BP_WaypointExporter)**: prints waypoint names and world positions at runtime for validation/export.
 - **Python (AirSim API Controller)**: mission controller (connect, takeoff, safe altitude, waypoint traversal, painting, forbidden zone checks, safe stop/hover).
 
@@ -79,11 +84,3 @@ The Python mission is a finite sequence:
      - print warning log (e.g., **"Forbidden Zone"**)
      - stop forward progress
      - hover safely and terminate mission
-
-## Expected Results (Simulation)
-- Drone connects, takes off, and navigates in the Cesium-streamed city.
-- Waypoints authored in UE are used as targets (no manual coordinate typing in Python).
-- Safe altitude policy reduces risk near buildings.
-- Painting sweep works at the chosen building without collisions under tested conditions.
-- Forbidden zone checks stop the drone before entering restricted airspace, with log confirmation.
-
